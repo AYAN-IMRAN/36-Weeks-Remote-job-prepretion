@@ -1,17 +1,4 @@
 
-# Week 1.2 | Basic JS APIs (Beginners)
-
-## 📅 Day 02  
-### 🔹 Introduction
-
-An **API** (Application Programming Interface) is a set of rules and protocols that allow different software components to communicate. APIs enable applications to:
-- Request and exchange data
-- Invoke functions from other services
-- Utilize features provided by external systems
-
-Absolutely! Here's a **clean, easy-to-read, pro-style version** of your **Day 1.2 – Basic JS APIs** section, with **no Urdu**, and formatted with short **key points** for clarity and impact. This fits naturally into your remote job prep journey and looks perfect for a post or notes:
-
----
 
 # 📘 Week 1.2 | Basic JavaScript APIs (Beginners)
 
