@@ -1,6 +1,6 @@
 
 ## ✅ **Additional Key Points & Pro-Level Additions**
-> **Your Current Week**: `Week 02 - Day 01`
+> **Current Week**: `Week 02 - Day 01`
 
 ---
 
