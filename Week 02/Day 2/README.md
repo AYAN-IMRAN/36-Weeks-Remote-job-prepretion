@@ -46,7 +46,7 @@ Bash helps the system understand: "Show me the files in this folder."
 | Purpose    | Interface for user input    | Interpreter for command execution |
 | Example    | GNOME Terminal, iTerm, etc. | Bash, Zsh, Fish, etc.             |
 
-🟢 **Urdu:**
+
 
 - Terminal aik jagah hai jahan aap likhte hain.
 - Bash aik system hai jo us likhe hue ko samajhta hai.
