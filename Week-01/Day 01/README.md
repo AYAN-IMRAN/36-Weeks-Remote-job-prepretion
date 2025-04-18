@@ -706,3 +706,119 @@ console.log(greet("Ayan")); // Output: Hello, Ayan
 
 ---
 
+# 🧠 What is Hoisting?
+
+> JavaScript code run hone se pehle, **variables aur functions ko upar le jata hai (hoist karta hai)**.  
+> Lekin **`var`, `let`, `const` alag behave karte hain**.
+
+---
+
+## ✅ `var` Hoisting — Allowed, but gives `undefined`
+
+```js
+console.log(a);  // ✅ Output: undefined
+var a = 10;
+console.log(a);  // ✅ Output: 10
+```
+
+### 📘 Easy Explanation:
+- JS `var a;` ko top pe le gaya (hoist kiya).
+- Pehle `a` ki value `undefined` thi.
+- Baad me `a = 10;` assign hua.
+
+---
+
+## 🚫 `let` Hoisting — Hoist hota hai, **lekin access se pehle error deta hai**
+
+```js
+console.log(b);  // ❌ Error: Cannot access 'b' before initialization
+let b = 20;
+```
+
+### 📘 Easy Explanation:
+- JS `let b;` ko memory me le gaya, lekin **TDZ (Temporal Dead Zone)** me rakha.
+- Jab tak `let b = 20;` nahi aata, tab tak **use nahi kar sakte**.
+
+---
+
+## 🚫 `const` Hoisting — Same as `let`, but also needs a value
+
+```js
+console.log(c);  // ❌ Error: Cannot access 'c' before initialization
+const c = 30;
+```
+
+### 📘 Extra Point:
+- `const` ko declare aur assign **ek saath karna hota hai**.
+- Warna error deta hai.
+
+---
+
+## ✅ Function Declaration Hoisting — Pehle call karna allowed
+
+```js
+greet(); // ✅ Output: Hello!
+
+function greet() {
+  console.log("Hello!");
+}
+```
+
+### 📘 Explanation:
+- JS ne **poori function** ko top pe le gaya.
+- Isliye pehle call karna bhi chal gaya.
+
+---
+
+## 🚫 Function Expression with `var` — Gives `TypeError`
+
+```js
+sayHi(); // ❌ Output: TypeError: sayHi is not a function
+
+var sayHi = function () {
+  console.log("Hi!");
+};
+```
+
+### 📘 Explanation:
+- `var sayHi;` upar chala gaya, so `sayHi` = `undefined`
+- Jab hum `sayHi()` likhte hain, wo `undefined()` ban jata hai ⇒ error
+
+---
+
+## 🚫 Function Expression with `let` — Gives `ReferenceError`
+
+```js
+sayHello(); // ❌ Output: ReferenceError: Cannot access 'sayHello' before initialization
+
+let sayHello = function () {
+  console.log("Hello!");
+};
+```
+
+---
+
+## ✅ Summary Table
+
+| Code Type               | Hoisted? | Output if used before line | Error? Type               |
+|-------------------------|----------|-----------------------------|---------------------------|
+| `var x`                 | ✅ Yes   | `undefined`                 | ❌ No                     |
+| `let x`                 | ✅ Yes   | ❌ ReferenceError           | ✅ TDZ (Temporal Dead Zone) |
+| `const x`               | ✅ Yes   | ❌ ReferenceError           | ✅ Must initialize         |
+| `function func()`       | ✅ Yes   | ✅ Works (full hoisted)     | ❌ No                     |
+| `var func = function()` | ⚠️ Yes   | ❌ TypeError                | ✅ Yes                    |
+| `let/const func = () =>`| ✅ Yes   | ❌ ReferenceError           | ✅ TDZ                    |
+
+---
+
+## 🧠 Summary:
+
+> JavaScript pehlay sab kuch declare karta hai (hoist), lekin:
+- `var` ka value undefined hoti hai pehlay
+- `let` aur `const` memory me hote hain but access nahi kar sakte — error deta hai
+- Full `function()` hoist hoti hai
+- Function expressions hoist nahi hoti (ya undefined hoti hain)
+
+---
+
+
