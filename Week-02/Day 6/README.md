@@ -375,6 +375,70 @@ git push
 
 ---
 
+### 🧠 Centralized vs Distributed VCS
+| Type | Description | Apni Zuban main |
+|------|-------------|------------|
+| Centralized | One central server — sab log wahi se code lete hain aur wahi par save karte hain. | Aik hi jagah sab ka data hota hai |
+| Distributed | Har developer ke paas apna full copy hoti hai — offline bhi kaam possible. | Har user ke paas apna version hota hai |
+
+🔸 Git is a **distributed VCS** — so you can work **offline**, then sync later.
+
+---
+
+### 🔐 Authenticating with GitHub (CLI)
+If you're pushing code to GitHub for the first time:
+
+1. Generate a **personal access token (PAT)** from [https://github.com/settings/tokens](https://github.com/settings/tokens)
+2. Use that token **instead of your password** when prompted during `git push`.
+
+🔐 Example:
+```
+Username: your_github_username  
+Password: your_token_here (paste PAT)
+```
+
+🗣️ GitHub ab passwords allow nahi karta, token se secure access hota hai.
+
+---
+
+### 🔁 What is a Pull Request (PR)?
+Pull Request = When you request changes from your branch to be merged into another branch (usually `main`) on GitHub.
+
+- Used in team projects
+- Helps in **code review**, discussion, and approval
+- Created through **GitHub UI**, not terminal
+
+🧠 Think of PR as: *"Hey, can you check and accept my changes into the main project?"*
+
+---
+
+### ⚔️ What is a Merge Conflict?
+Merge conflict happens when:
+- Two branches **change the same part** of a file
+- Git doesn’t know which change to keep
+
+🔍 How to fix it?
+1. Git shows the file with both changes:
+```diff
+<<<<<<< HEAD
+This is your version
+=======
+This is their version
+>>>>>>> other-branch
+```
+2. You edit manually to resolve.
+3. Then commit again:
+```bash
+git add filename
+git commit -m "Resolved merge conflict"
+```
+
+📌 Conflict = Jab 2 log same line ko badalte hain. Manual decision lena padta hai.
+
+---
+
+
+
 ## 🔐 **Helpful Shortcuts**
 
 | Command                     | Meaning |
