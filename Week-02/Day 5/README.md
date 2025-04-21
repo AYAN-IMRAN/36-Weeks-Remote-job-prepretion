@@ -150,7 +150,54 @@ let total = cart.reduce((acc, product) => acc + product.price, 0);
 console.log(total); // 750
 ```
 
+## ✅ startsWith() — Check Beginning of Strings
+
+### 🔹 Short Definition:
+The `startsWith()` method checks if a string **starts with a specific substring**.
+
 ---
+
+### 🧠 Key Points:
+- Returns `true` or `false`
+- Case-sensitive
+- Often used in filtering or validation
+
+---
+
+### 🔸 Syntax:
+```js
+string.startsWith(searchString, position)
+```
+- `searchString`: The text to check
+- `position` (optional): Where to start checking (default is 0)
+
+---
+
+### 🔍 Examples:
+
+#### ✅ Basic Use:
+```js
+let word = "JavaScript";
+console.log(word.startsWith("Java"));  // true
+console.log(word.startsWith("java"));  // false (case-sensitive)
+```
+
+#### ✅ Filtering with startsWith:
+```js
+let fruits = ["apple", "banana", "apricot", "cherry"];
+let aFruits = fruits.filter(fruit => fruit.startsWith("a"));
+
+console.log(aFruits);  // ["apple", "apricot"]
+```
+
+📌 `startsWith()` aksar `filter()` ke sath use hota hai to find items starting with a specific letter or word.
+
+---
+
+
+
+---
+
 
 ## 📝 Summary
 
@@ -192,6 +239,7 @@ Executes a function on **each element**, but does **not return anything**.
 | `sort()`   | Same array       | ✅ Yes             | Sorting values        |
 | `reduce()` | Single value     | ❌ No              | Total / combine       |
 | `forEach()`| `undefined`      | ❌ No              | Loop with side effects|
+| startsWith()  | String ke start ko check karta hai | `true`/`false` |
 
 ---
 
