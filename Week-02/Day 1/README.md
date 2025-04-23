@@ -1,3 +1,114 @@
+### 🔄 Understanding Callbacks (💡 Foundation of Async JS)
+
+**What is a Callback?**
+> A callback is a function passed as an argument to another function, to be **called later**, often when some async task is complete.
+
+```js
+function fetchData(callback) {
+  setTimeout(() => {
+    callback("✅ Data received");
+  }, 1000);
+}
+
+fetchData((data) => {
+  console.log(data); // ✅ Data received
+});
+```
+
+🧠 Callbacks are the **base mechanism** before Promises and async/await came into play.
+
+---
+
+### ⚠️ Callback Hell & Pyramid of Doom
+
+When callbacks get nested inside other callbacks:
+
+```js
+getUser((user) => {
+  getPosts(user.id, (posts) => {
+    getComments(posts[0].id, (comments) => {
+      // 😵 deeply nested
+    });
+  });
+});
+```
+
+✅ Better: Use **Promises or async/await** to flatten this.
+
+---
+
+### ✨ Promises vs Callback Functions
+
+| Feature         | Callback                    | Promise                        |
+|-----------------|-----------------------------|--------------------------------|
+| Chaining        | Messy                       | Clean with `.then()`          |
+| Error Handling  | Manual `try/catch` in each  | Centralized with `.catch()`   |
+| Readability     | Can get deeply nested       | Flatter, easier to read       |
+| State           | No standard way             | Has built-in states            |
+
+---
+
+### 🔁 Asynchronous Functions
+
+**Asynchronous functions** are those that run independently and don’t block the main thread.
+
+Examples:
+- `setTimeout`, `fetch`, DB queries, API calls
+
+**Why use async functions?**
+- JS is single-threaded. Async behavior prevents UI blocking and improves performance.
+
+---
+
+### 🔄 Promisified vs Non-Promisified Functions
+
+#### 🧪 Non-Promisified (Callback-based)
+```js
+function loadData(callback) {
+  setTimeout(() => {
+    callback("Data ✅");
+  }, 1000);
+}
+```
+
+#### 🔁 Promisified Version
+```js
+function loadData() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("Data ✅");
+    }, 1000);
+  });
+}
+```
+
+✅ Promisifying helps make async functions compatible with `async/await`.
+
+🧠 Node.js: Many legacy functions still use callbacks, but `util.promisify()` can convert them.
+
+```js
+const fs = require('fs');
+const util = require('util');
+const readFile = util.promisify(fs.readFile);
+
+const content = await readFile('file.txt', 'utf8');
+```
+
+---
+
+## 🔄 Revision
+
+| Topic                        | Key Insight                                                              |
+|-----------------------------|---------------------------------------------------------------------------|
+| Callbacks                   | First form of async control flow                                         |
+| Callback Hell               | Leads to deeply nested code – avoid it                                   |
+| Promises                    | Cleaner async control flow with `.then()` and `.catch()`                 |
+| Promisified Functions       | Enable use of `await` instead of callbacks                               |
+| async/await                 | Syntactic sugar over Promises – looks like sync code, runs async         |
+| Error Handling              | Prefer `try/catch` with `async/await`, and `.catch()` with Promises      |
+
+---
+
 
 ## ✅ **Additional Key Points & Pro-Level Additions**
 > **Current Week**: `Week 02 - Day 01`

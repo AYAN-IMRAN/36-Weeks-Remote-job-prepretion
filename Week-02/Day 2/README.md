@@ -170,3 +170,152 @@ Ye command file ya folder delete karne ke liye use hoti hai.
 | `rm` | Delete karna | Remove file/folder |
 
 ---
+
+
+### 🔀 cd into Multiple Folders in One Command
+**Command:**
+
+```bash
+cd folder1/folder2/folder3
+```
+
+🧠 Ye command ek hi baar mein aapko **nested folders ke andar** le jaata hai.
+
+**Example:**
+
+```bash
+cd Documents/Projects/JavaScript
+```
+
+---
+
+### 📝 cat – View File Content
+**Purpose:** File ke andar kya likha hai usko terminal mein dikhata hai.
+
+**Command:**
+
+```bash
+cat file.txt
+```
+
+📍 Output: File ke andar likha hua content screen pe aayega.
+
+🧠 **cat** ka matlab hai **concatenate**, lekin mostly use hota hai **file content dekhne ke liye**.
+
+---
+
+### 📄 vi – Terminal Text Editor
+**Purpose:** File ke andar likhne/edit karne ke liye use hota hai (inside terminal).
+
+**Command:**
+
+```bash
+vi file.txt
+```
+
+- Press `i` to **start writing (insert mode)**
+- Press `Esc` to **exit writing mode**
+- Type `:wq` to **save and quit**
+
+🧠 vi is old-school but powerful! (Mac/Linux default)
+
+---
+
+### 🔁 mv – Move or Rename Files
+**Purpose:** File ko **move** ya **rename** karne ke liye.
+
+**Command:**
+
+```bash
+mv oldname.txt newname.txt  # Rename
+mv file.txt Documents/      # Move to Documents
+```
+
+🧠 `mv` = **move**, but also works for renaming.
+
+---
+
+### 📄 cp – Copy Files or Folders
+**Purpose:** File ya folder ka duplicate banata hai.
+
+**Command:**
+
+```bash
+cp file.txt copy.txt               # File copy
+cp -r folder1 folderCopy           # Folder copy (recursive)
+```
+
+---
+
+## 💻 Installing Node.js on Your Machine
+
+**Step 1:** Go to [https://nodejs.org](https://nodejs.org)
+
+**Step 2:** Download **LTS version** (Long-Term Support)
+
+**Step 3:** Install and verify:
+
+```bash
+node -v     # ✅ Version of Node
+npm -v      # ✅ Version of npm
+```
+
+---
+
+## ⚙️ node – Run JS Files in Terminal
+
+**Command:**
+
+```bash
+node file.js
+```
+
+🧠 Node terminal ke through aap **JavaScript ka code run kar sakte ho** without needing a browser.
+
+---
+
+## 📦 npm – Node Package Manager
+
+**What is npm?**
+> A tool to install external libraries (e.g., lodash, express)
+
+**Command to install a package:**
+
+```bash
+npm install package-name
+```
+
+🧠 Example:
+
+```bash
+npm install axios
+```
+
+✨ This will create a `node_modules` folder and `package.json` if not already present.
+
+---
+
+### 📦 npm vs node
+
+| Command | Purpose |
+|--------|---------|
+| `node` | Runs JS file |
+| `npm`  | Manages libraries/packages |
+
+---
+
+
+
+
+| Command | Urdu Meaning | Use |
+|--------|---------------|-----|
+| cat     | File ka content dikhana | View content of file |
+| vi      | File edit karna         | Open terminal-based editor |
+| mv      | File rename ya move karna | Move or rename file |
+| cp      | Copy karna | Duplicate file or folder |
+| node    | JS code run karna | Run JavaScript in terminal |
+| npm     | Library install karna | Manage Node.js libraries |
+
+---
+
+
