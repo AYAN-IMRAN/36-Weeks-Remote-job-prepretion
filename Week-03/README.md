@@ -400,3 +400,510 @@ router.post("/validate", (req, res) => {
 
 ---
 
+
+### ✅ Flash Messages in Express (with `connect-flash`)
+
+**Definition:**  
+Flash messages are temporary messages stored in session and removed after being displayed to the user. They are useful for sending success or error messages between redirects.
+
+#### 🔧 Setup
+```bash
+npm i connect-flash express-session
+```
+
+#### 🧠 Use in `app.js`
+```js
+const session = require("express-session");
+const flash = require("connect-flash");
+
+app.use(session({
+  secret: "hello hello baaye baaye",
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(flash());
+```
+
+#### 🧪 Dry Run:
+```js
+req.flash("age", 18);
+```
+➡ Ye ek temporary message set kar raha hai session mein `age` key ke sath.
+
+```js
+res.send("bangaya");
+```
+➡ Page redirect ya response diya gaya, message backend pe set ho gaya.
+
+Ab check route:
+```js
+console.log(req.flash("age"));
+res.send("check kr lo be ky terminal pr value agai ");
+```
+➡ Ye check karega ke message session mein hai ya nahi. Pehli baar milay ga, second time mein remove ho jata hai.
+
+---
+
+### 🗃️ Mongoose Schema (Basics + Advance)
+
+**Definition:**  
+A Mongoose Schema defines the structure of the documents in a MongoDB collection. It acts like a blueprint.
+
+#### 📦 Example:
+```js
+const mongoose = require("mongoose");
+
+const userSchema = mongoose.Schema({
+  username: String,
+  nickname: String,
+  description: String,
+  categories: {
+    type: Array,
+    default: []
+  },
+  datecreated: {
+    type: Date,
+    default: Date.now
+  }
+});
+```
+
+#### 🧪 Dry Run:
+➡ Is schema mein user ka naam, nickname, ek description aur categories ka array rakha gaya hai.  
+➡ Agar categories nahi di to default khaali array set ho jaye ga.  
+➡ `datecreated` mein document banne ka waqt record ho ga.
+
+---
+
+### 🔍 MongoDB Search (Advance Filtering Techniques)
+
+#### 🔡 Case-Insensitive Search (regex + `i` flag)
+```js
+var regex = new RegExp("Ayan", "i");
+let user = await userModel.find({ username: regex });
+```
+
+🧪 **Dry Run:**  
+➡ Ye query `ayan`, `Ayan`, `AYAN` sab match kare gi.
+
+---
+
+#### 🔢 Start/End Word Matching
+```js
+var regex = new RegExp("^Ayan$", "i");
+let user = await userModel.find({ username: regex });
+```
+
+🧪 **Dry Run:**  
+➡ Yeh sirf un usernames ko match kare ga jo **sirf "Ayan"** hain, koi aur characters allowed nahi.
+
+---
+
+#### 🔍 Search in Array (e.g., categories)
+```js
+let user = await userModel.find({
+  categories: { $all: ["JS", "TS"] }
+});
+```
+
+🧪 **Dry Run:**  
+➡ Wo users milein gy jinki categories mein **JS aur TS dono hon**.
+
+---
+
+#### 📅 Date Range Filtering
+```js
+let date1 = new Date(2024, 0, 1); // Jan 1, 2024
+let date2 = new Date(2024, 11, 31); // Dec 31, 2024
+
+let user = await userModel.find({
+  datecreated: { $gte: date1, $lte: date2 }
+});
+```
+
+🧪 **Dry Run:**  
+➡ Yeh un documents ko fetch kare ga jo Jan se Dec 2024 ke darmiyan banay gaye hain.
+
+---
+
+#### ✅ Field Existence Check
+```js
+let user = await userModel.find({ categories: { $exists: true } });
+```
+
+🧪 **Dry Run:**  
+➡ Sirf unhi documents ko fetch kare ga jisme `categories` field maujood hai.
+
+---
+
+### 🧾 Create Sample User (Dry run)
+```js
+router.get('/create', async function (req, res) {
+  await userModel.create({
+    username: "Ayan",
+    nickname: "Nanu",
+    description: "I'm AI and Full Stack Engineer",
+    categories: ["JS", "TS"]
+  });
+
+  res.send("User created!");
+});
+```
+
+🧪 **Dry Run:**  
+➡ Ye ek naya user banata hai database mein with predefined fields.
+
+---
+
+## 🔐 Authentication & Authorization 
+
+**Definition:**  
+Authentication is the process of verifying user identity. Authorization defines what an authenticated user can access.
+
+### 🧰 Required Packages:
+```bash
+npm i passport-local passport-local-mongoose mongoose express-session
+```
+
+### 🔗 Setup (`app.js`)
+```js
+const session = require("express-session");
+const passport = require("passport");
+
+app.use(session({
+  secret: "hello hello baaye baaye",
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+```
+
+---
+
+### 📄 Setup Schema with Plugin (`users.js`)
+```js
+const mongoose = require("mongoose");
+const plm = require("passport-local-mongoose");
+
+const userSchema = mongoose.Schema({
+  username: String,
+  password: String,
+  secret: String
+});
+
+userSchema.plugin(plm);
+module.exports = mongoose.model("user", userSchema);
+```
+
+---
+
+### 🎯 Register Route
+```js
+const LocalStrategy = require("passport-local");
+passport.use(new LocalStrategy(userModel.authenticate()));
+
+router.post("/register", function (req, res) {
+  let userData = new userModel({
+    username: req.body.username,
+    secret: req.body.secret
+  });
+
+  userModel.register(userData, req.body.password)
+    .then(function (registeredUser) {
+      passport.authenticate("local")(req, res, function () {
+        res.redirect("/profile");
+      });
+    });
+});
+```
+
+🧪 **Dry Run:**  
+➡ Pehle user ka data create hota hai  
+➡ Fir `.register()` se password bhi hash hoke store hota hai  
+➡ Phir authenticate ho jata hai aur user ko profile pe redirect kar dete hain.
+
+---
+
+### 🔐 Login
+```js
+router.post("/login",
+  passport.authenticate("local", {
+    successRedirect: "/profile",
+    failureRedirect: "/"
+  }), function (req, res) {});
+```
+
+---
+
+### 🚪 Logout
+```js
+app.get('/logout', function (req, res, next) {
+  req.logout(function (err) {
+    if (err) return next(err);
+    res.redirect('/');
+  });
+});
+```
+
+---
+
+### 🔐 isLoggedIn Middleware
+```js
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect("/");
+}
+```
+
+---
+
+
+
+
+
+### 🔰 **Introduction**
+
+Authentication and security are the heart of any backend system. Without properly verifying *who* is using your application and *what* they’re allowed to do, your entire app is at risk.
+
+---
+
+## ✅ **Authentication vs Authorization**
+
+### 🔐 **Authentication** (Main aap kaun ho?)
+
+**Definition**: Proving the identity of a user. Yaani user ka login hona.
+
+**Example**: Email/password dalna ya Google/Facebook se login karna.
+
+> Jab user login karta hai, hum check karte hain ke ye banda asal mein wohi hai ya nahi.
+
+---
+
+### 🛡️ **Authorization** (Aap kya kar saktay ho?)
+
+**Definition**: Granting or denying access to certain parts of the app based on user roles/permissions.
+
+**Example**: Admin ko sab kuch access hai, user ko sirf profile.
+
+> Har user ko har feature ka access nahi hota. Authorization decide karta hai kis role ko kya access hai.
+
+---
+
+## 🍪 **Cookies and Session**
+
+**Cookies**: Small pieces of data stored in the browser (client-side). Often used to store session tokens (like JWT).
+
+**Sessions**: Stored on the server. They remember the user's identity and state (like login info).
+
+---
+
+### 🔧 **How to Set a Cookie in Express**
+
+```js
+res.cookie("token", token, {
+  httpOnly: true,
+  maxAge: 24 * 60 * 60 * 1000, // 1 day
+});
+```
+
+> Cookie browser main store hoti hai, jisme hum token rakhte hain jo server check karta hai.
+
+---
+
+## 🔐 **bcrypt - Password Hashing (Encryption)**
+
+### 📦 Install
+```bash
+npm i bcrypt
+```
+
+### ✅ **What is Hashing?**
+
+> Hashing means converting plain text into unreadable format using an algorithm.
+
+**Example:**
+```js
+const bcrypt = require('bcrypt');
+const password = "mySecret123";
+
+bcrypt.hash(password, 10, (err, hash) => {
+  console.log(hash);
+});
+```
+
+> Hum password ko aise encrypt karte hain ke original password mil hi nahi sakta. Isy hash bolte hain.
+
+---
+
+### 🔁 **How to Compare Passwords (Login ke time)**
+
+```js
+bcrypt.compare(userInput, hashedPassword, (err, result) => {
+  if(result){
+    console.log("Passwords match");
+  } else {
+    console.log("Wrong password");
+  }
+});
+```
+
+---
+
+## 🔐 **What is JWT (JSON Web Token)?**
+
+JWT is a **secure way to send data** between server and client.
+
+- Contains user info in an **encoded** form.
+- It is **stateless** (no need to store on server).
+- Mostly used in authentication.
+
+### 📦 Install
+```bash
+npm i jsonwebtoken
+```
+
+---
+
+### 🔧 **JWT Usage**
+
+#### ➕ Create a Token
+
+```js
+const jwt = require('jsonwebtoken');
+
+const token = jwt.sign({ userId: user._id }, "mySecretKey", {
+  expiresIn: "1d",
+});
+```
+
+#### ✅ Verify Token (Authorization Middleware)
+
+```js
+const verifyToken = (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) return res.status(403).send("Token missing");
+
+  jwt.verify(token, "mySecretKey", (err, decoded) => {
+    if (err) return res.status(401).send("Invalid Token");
+
+    req.user = decoded;
+    next();
+  });
+};
+```
+
+> JWT ek signature hota hai user ka, jo server check karta hai. Agar token valid ho, toh user ko access milta hai.
+
+---
+
+## ⚙️ **Server Boilerplate & Express Setup**
+
+
+
+### 🚀 Express Setup
+
+```js
+const express = require('express');
+const app = express();
+const cookieParser = require('cookie-parser');
+
+app.use(express.json());
+app.use(cookieParser());
+```
+
+---
+
+### 🧠 Other Key Concepts (Based on Your Timeline)
+
+#### 🧩 View Engine Setup (EJS Example)
+
+```js
+app.set('view engine', 'ejs');
+```
+
+#### 🎨 Tailwind CSS with Express
+
+- Can be used for frontend templates rendered via EJS or plain HTML.
+
+#### 🧬 Mongoose Setup
+
+```js
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost:27017/mydb");
+```
+
+#### 👤 Create User Schema
+
+```js
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+  email: String,
+  password: String
+});
+
+module.exports = mongoose.model("User", userSchema);
+```
+
+---
+
+## 🔐 **Authentication Flow (Login/Logout)**
+
+### 🧾 Register Route (Hash Password)
+
+```js
+app.post("/register", async (req, res) => {
+  const { email, password } = req.body;
+  const hashed = await bcrypt.hash(password, 10);
+  
+  // Save to DB
+});
+```
+
+### 🔑 Login Route (Compare Password + Set Token)
+
+```js
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+
+  const match = await bcrypt.compare(password, user.password);
+
+  if(match){
+    const token = jwt.sign({ id: user._id }, "secret", { expiresIn: "1d" });
+    res.cookie("token", token, { httpOnly: true });
+    res.send("Login success");
+  }
+});
+```
+
+### 🚪 Logout Route
+
+```js
+app.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.send("Logged out");
+});
+```
+
+---
+
+## 📚 Summary - Key Points
+
+| Topic | Explanation |
+|-------|-------------|
+| 🔐 Authentication | Verifying user identity (Login) |
+| 🛡️ Authorization | Granting access to protected routes |
+| 🔒 bcrypt | Encrypting passwords (Hashing) |
+| 🔑 JWT | Secure token to verify user without session |
+| 🍪 Cookie | Storing JWT in browser |
+| 🔧 Middleware | Function to protect routes by checking token |
+| 🗃️ MongoDB | NoSQL DB for storing users |
+| 📁 Mongoose | ODM for MongoDB |
+| 🚀 Express | Framework to handle routes, APIs, middleware |
+
+---
