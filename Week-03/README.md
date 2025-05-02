@@ -163,7 +163,7 @@ npx nodemon
 
 ### 🗃️ **3. MongoDB & Mongoose Basics**
 
-#### 📚 **What is a Database? (Urdu + English)**
+#### 📚 **What is a Database?**
 > Database woh jagah hoti hai jahan humara data save hota hai.
 
 **Types:**
