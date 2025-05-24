@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Clock</title>
+</head>
+<body>
+    <h1>24-hour format: <span id="time24"></span></h1>
+    <h1>12-hour format: <span id="time12"></span></h1>
+
+    <script>
+        function updateClock() {
+            // Get the current time
+            const now = new Date();
+
+            // Format the time to HH:MM:SS (24-hour format)
+            let hours = now.getHours().toString().padStart(2, '0');
+            let minutes = now.getMinutes().toString().padStart(2, '0');
+            let seconds = now.getSeconds().toString().padStart(2, '0');
+
+            const time24 = `${hours}:${minutes}:${seconds}`;  // 24-hour format
+
+            // Format the time to HH:MM:SS AM/PM (12-hour format)
+            let period = hours >= 12 ? 'PM' : 'AM';
+            let hours12 = hours % 12;
+            hours12 = hours12 ? hours12 : 12;  // Convert 0 hour to 12 for 12 AM/PM
+            const time12 = `${hours12.toString().padStart(2, '0')}:${minutes}:${seconds} ${period}`;
+
+            // Display both formats in the HTML
+            document.getElementById('time24').innerText = time24;
+            document.getElementById('time12').innerText = time12;
+        }
+
+        // Update the clock every second
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
