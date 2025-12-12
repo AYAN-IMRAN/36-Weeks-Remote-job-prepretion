@@ -433,4 +433,3 @@ res.status(201).send("User created");
 - EJS → HTML + JavaScript = Dynamic pages.
 - Error handling → Server ko crash hone se bachata hai.
 - Server start karne ke liye: `node app.js`
-
