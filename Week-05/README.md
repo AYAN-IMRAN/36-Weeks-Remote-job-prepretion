@@ -46,4 +46,3 @@ Put your skills into practice by building a functional **Todo App** using React.
 * Delete tasks
 * Use state to manage todos
 * Practice component structuring
-
